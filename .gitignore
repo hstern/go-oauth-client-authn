@@ -1,0 +1,28 @@
+# Binaries / build output
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+/dist/
+
+# Test / coverage artifacts
+*.test
+*.out
+coverage.txt
+coverage.html
+
+# Go workspace files (kept local; never committed)
+go.work
+go.work.sum
+
+# Editor / OS noise
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Local agent context — carries private cross-references, never publish.
+# Also enforced via .git/info/exclude; listed here so a fresh clone stays clean.
+/.claude/
+/HANDOFF.md

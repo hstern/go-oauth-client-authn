@@ -1,0 +1,28 @@
+# golangci-lint v2 configuration.
+# Strict-but-stable set: the standard linters plus a few high-signal additions.
+# Tightened further as the surface grows; kept green on the phase-1 stub.
+version: "2"
+
+linters:
+  default: standard
+  enable:
+    - bodyclose      # HTTP response bodies must be closed — central to a transport library
+    - errorlint      # correct error wrapping / errors.Is/As usage
+    - misspell       # spelling in comments and docs
+    - revive         # broad style/lint rules (exported-symbol docs, naming, etc.)
+    - unconvert      # redundant type conversions
+  settings:
+    revive:
+      rules:
+        - name: exported
+          arguments:
+            - disableStutteringCheck
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
+  settings:
+    goimports:
+      local-prefixes:
+        - github.com/hstern/go-oauth-client-authn
