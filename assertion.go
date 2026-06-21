@@ -56,6 +56,10 @@ type assertionConfig struct {
 	lifetime time.Duration
 	// keyID, when non-empty, is written as the JWT "kid" header parameter.
 	keyID string
+	// rsaPSS selects RSASSA-PSS (PS256) over RSASSA-PKCS1-v1_5 (RS256) for RSA
+	// signing keys. It is meaningful only to private_key_jwt with an RSA key and
+	// is ignored for every other key type.
+	rsaPSS bool
 	// now supplies the current time; injectable so tests can pin iat/exp.
 	now func() time.Time
 }
@@ -101,6 +105,19 @@ func WithAssertionLifetime(d time.Duration) AssertionOption {
 // client has published several keys in its JWKS.
 func WithKeyID(kid string) AssertionOption {
 	return func(c *assertionConfig) { c.keyID = kid }
+}
+
+// WithRSAPSS selects RSASSA-PSS signatures (the PS256 JWS algorithm) over the
+// default RSASSA-PKCS1-v1_5 (RS256) for an RSA private_key_jwt signing key. RFC
+// 7518 §3.5 RECOMMENDS PS256 for new deployments, but RS256 remains the most
+// widely interoperable default, so the library defaults to RS256 and treats PSS
+// as opt-in.
+//
+// The option is meaningful only for private_key_jwt with an RSA key. It has no
+// effect on EC or Ed25519 keys (whose algorithm is fixed by the curve), nor on
+// client_secret_jwt (HS256), and is silently ignored there.
+func WithRSAPSS() AssertionOption {
+	return func(c *assertionConfig) { c.rsaPSS = true }
 }
 
 // withClock overrides the clock used for the iat and exp claims. It is
