@@ -1,0 +1,58 @@
+# go-oauth-client-authn
+
+> Composable net/http round-trippers for OAuth 2.0 client authentication.
+
+go-oauth-client-authn implements the OAuth 2.0 client-authentication methods as
+small, orthogonal http.RoundTripper decorators. Pick a method, wrap a base
+transport, and every request the transport carries to a token endpoint is
+authenticated — with no coupling to any particular OAuth client library. It is
+framework-neutral and depends only on the standard library plus go-jose/v4 (for
+the JWT assertion methods). Requires Go 1.26 or newer.
+
+Module path: github.com/hstern/go-oauth-client-authn (package authn)
+
+## Composition core
+
+- `Method` — interface for a single client-authentication method; decorates a
+  base http.RoundTripper.
+- `Transport(m Method, base http.RoundTripper) http.RoundTripper` — applies m,
+  defaulting base to http.DefaultTransport.
+- `NewClient(m Method, base http.RoundTripper) *http.Client` — wraps the
+  result in a ready *http.Client to hand to a token-family client.
+
+The wire effect is derived per request, so one configured method authenticates
+token, pushed-authorization, introspection, and revocation requests alike.
+
+## Methods
+
+- `client_secret_basic` (RFC 6749 §2.3.1) — `ClientSecretBasic(clientID, clientSecret string) Method`
+- `client_secret_post` (RFC 6749 §2.3.1) — `ClientSecretPost(clientID, clientSecret string) Method`
+- `client_secret_jwt` (RFC 7523, HS256) — `ClientSecretJWT(clientID, clientSecret string, opts ...AssertionOption) Method`
+- `private_key_jwt` (RFC 7523, RS/ES/PS) — `PrivateKeyJWT(clientID string, signer crypto.Signer, opts ...AssertionOption) Method`
+- `tls_client_auth` (RFC 8705) — `TLSClientAuth(clientID string, cert tls.Certificate, opts ...TLSOption) Method`
+- `self_signed_tls_client_auth` (RFC 8705) — `SelfSignedTLSClientAuth(clientID string, cert tls.Certificate, opts ...TLSOption) Method`
+
+## Options
+
+- Assertion (RFC 7523 methods): `WithAudience`, `WithAssertionLifetime`,
+  `WithKeyID`, `WithRSAPSS`. With no audience set, the assertion `aud` is
+  derived from the request URL.
+- TLS (RFC 8705 methods): `WithServerName`.
+
+## Key input
+
+- `SignerFromPEM(pemBytes []byte) (crypto.Signer, error)` — PEM block to signer.
+- `SignerFromJWK(jwkJSON []byte) (crypto.Signer, error)` — JWK to signer.
+
+Both produce a crypto.Signer for PrivateKeyJWT.
+
+## Usage
+
+    method := authn.ClientSecretBasic("client-id", "client-secret")
+    client := authn.NewClient(method, nil)
+    // client.Do(req) now authenticates every token-endpoint request.
+
+## Links
+
+- README: https://github.com/hstern/go-oauth-client-authn/blob/main/README.md
+- API reference: https://pkg.go.dev/github.com/hstern/go-oauth-client-authn
