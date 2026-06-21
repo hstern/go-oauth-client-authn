@@ -84,7 +84,7 @@ type mtls struct {
 	name       string
 	clientID   string
 	cert       tls.Certificate
-	serverName string // optional tls.Config.ServerName, set via WithRootCAName
+	serverName string // optional tls.Config.ServerName, set via WithServerName
 }
 
 // newMTLS builds the shared mTLS Method, applying any options.
@@ -141,7 +141,7 @@ func (m *mtls) RoundTripper(base http.RoundTripper) http.RoundTripper {
 // client Certificates replaced by m.cert. A nil base yields a fresh config
 // carrying the certificate and an explicit TLS 1.2 floor — the same minimum the
 // crypto/tls default enforces, stated in source so the security posture does not
-// depend on a caller supplying a base config. The WithRootCAName option fills in
+// depend on a caller supplying a base config. The WithServerName option fills in
 // ServerName only when base left it empty, so a caller's explicit ServerName
 // always wins; a non-empty base ServerName is never overridden.
 func (m *mtls) tlsConfig(base *tls.Config) *tls.Config {
