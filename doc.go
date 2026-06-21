@@ -17,6 +17,9 @@
 // RFC 8693 token-exchange client — by sitting underneath them in the transport
 // chain.
 //
-// This is a stub during phase 1 of the build; the Method interface and the
-// per-method constructors land in subsequent phases.
+// The composition core is the [Method] interface together with [Transport] and
+// [NewClient]: a Method decorates a base http.RoundTripper, Transport applies it
+// (defaulting to http.DefaultTransport), and NewClient wraps the result in an
+// *http.Client ready to hand to a token-family client. The concrete methods land
+// on top of this core in subsequent phases of the build.
 package authn
