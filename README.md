@@ -1,5 +1,10 @@
 # go-oauth-client-authn
 
+[![CI](https://github.com/hstern/go-oauth-client-authn/actions/workflows/ci.yml/badge.svg)](https://github.com/hstern/go-oauth-client-authn/actions/workflows/ci.yml)
+[![Go Reference](https://pkg.go.dev/badge/github.com/hstern/go-oauth-client-authn.svg)](https://pkg.go.dev/github.com/hstern/go-oauth-client-authn)
+[![Go Report Card](https://goreportcard.com/badge/github.com/hstern/go-oauth-client-authn)](https://goreportcard.com/report/github.com/hstern/go-oauth-client-authn)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+
 Composable `net/http` round-trippers for **OAuth 2.0 client authentication**.
 
 `go-oauth-client-authn` implements the client-authentication methods defined
