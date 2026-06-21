@@ -1,2 +1,4 @@
 github.com/go-jose/go-jose/v4 v4.1.4 h1:moDMcTHmvE6Groj34emNPLs/qtYXRVcd6S7NHbHz3kA=
 github.com/go-jose/go-jose/v4 v4.1.4/go.mod h1:x4oUasVrzR7071A4TnHLGSPpNOm2a21K9Kf04k1rs08=
+github.com/hstern/go-token-exchange v0.1.1 h1:9Xrt4nts0DGGM7xpw8hlaomIFFbnJdgZOTAGI3kefsk=
+github.com/hstern/go-token-exchange v0.1.1/go.mod h1:LunRGsoUYqkUAp4phB1yTZzxY/JJCHIxxAgPSxpNeEs=
